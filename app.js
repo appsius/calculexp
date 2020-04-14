@@ -103,6 +103,7 @@ const UIController = (function () {
 		incomeLabel: '.budget__income--value',
 		expensesLabel: '.budget__expenses--value',
 		percentageLabel: '.budget__expenses--percentage',
+		container: '.container',
 	};
 
 	return {
@@ -122,12 +123,12 @@ const UIController = (function () {
 				element = DOMStrings.incomeContainer;
 
 				html =
-					'<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+					'<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 			} else if (type === 'exp') {
 				element = DOMStrings.expensesContainer;
 
 				html =
-					'<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+					'<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 			}
 
 			// replace the placeholder text with actual data
@@ -181,11 +182,14 @@ const controller = (function (budgetCtrl, UICtrl) {
 		const DOM = UICtrl.getDOMStrings();
 
 		document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
-		document.addEventListener('keypress', function (e) {
-			if (e.keyCode === 13 || e.which === 13) {
+		document.addEventListener('keypress', function (event) {
+			if (event.keyCode === 13 || event.which === 13) {
 				ctrlAddItem();
 			}
 		});
+		document
+			.querySelector(DOM.container)
+			.addEventListener('click', ctrlDeleteItem);
 	};
 
 	const updateBudget = function () {
@@ -218,6 +222,25 @@ const controller = (function (budgetCtrl, UICtrl) {
 
 			// calculate and update budget
 			updateBudget();
+		}
+	};
+
+	const ctrlDeleteItem = function (event) {
+		let itemID, splitID, type, ID;
+
+		itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+		if (itemID) {
+			// inc-1
+			splitID = itemID.split('-');
+			type = splitID[0];
+			ID = splitID[1];
+
+			// delete item from data structure
+
+			// delete the item from the UI
+
+			// update and show the new budget
 		}
 	};
 
